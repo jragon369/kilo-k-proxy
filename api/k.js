@@ -16,40 +16,45 @@ export default async function handler(req, res) {
     const { message } = req.body;
     console.log('Received message:', message);
     
-    // Use your original playground endpoint that was working
-    const response = await fetch('https://www.chatbase.co/api/chat/u2FE20IFibqz6cbARRZZy/playground', {
+    // Try the exact format from Chatbase docs
+    const response = await fetch('https://www.chatbase.co/api/v1/chat', {
       method: 'POST',
       headers: {
+        'Authorization': `Bearer bdd521d9-ff09-4fa2-9d7a-c228e2642c7f`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        message: message,
-        stream: false
+        messages: [
+          {"content": message, "role": "user"}
+        ],
+        chatbotId: "u2FE20IFibqz6cbARRZZy",
+        stream: false,
+        temperature: 0
       })
     });
     
+    console.log('Response status:', response.status);
+    console.log('Response headers:', [...response.headers.entries()]);
+    
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Chatbase Error:', response.status, errorText);
-      throw new Error(`Chatbase error: ${response.status}`);
+      console.error('Chatbase API Error:', response.status, errorText);
+      return res.status(response.status).json({ 
+        error: `Chatbase error: ${response.status} - ${errorText}`,
+        details: errorText
+      });
     }
     
-    // The playground endpoint might return text, not JSON
-    const contentType = response.headers.get('content-type');
-    let data;
+    const data = await response.json();
+    console.log('Chatbase success:', data);
     
-    if (contentType && contentType.includes('application/json')) {
-      data = await response.json();
-    } else {
-      const text = await response.text();
-      data = { text: text };
-    }
-    
-    console.log('Chatbase response:', data);
     res.status(200).json(data);
     
   } catch (error) {
     console.error('Proxy Error:', error);
-    res.status(500).json({ error: 'K connection failed: ' + error.message });
+    res.status(500).json({ 
+      error: 'Proxy error: ' + error.message,
+      details: error.stack
+    });
   }
 }
