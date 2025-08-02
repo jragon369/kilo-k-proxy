@@ -1,4 +1,5 @@
 export default async function handler(req, res) {
+  // Add CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -9,14 +10,14 @@ export default async function handler(req, res) {
   }
   
   if (req.method !== 'POST') {
-    res.status(405).json({ error: 'Method not allowed' });
-    return;
+    return res.status(405).json({ error: 'Method not allowed' });
   }
   
   try {
     const { message } = req.body;
+    console.log('Received message:', message);
     
-    // Try the official API endpoint first
+    // Call the real Chatbase API
     const response = await fetch('https://www.chatbase.co/api/v1/chat', {
       method: 'POST',
       headers: {
@@ -34,16 +35,4 @@ export default async function handler(req, res) {
     });
     
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Chatbase API Error:', response.status, errorText);
-      throw new Error(`Chatbase API error: ${response.status} - ${errorText}`);
-    }
-    
-    const data = await response.json();
-    res.status(200).json(data);
-    
-  } catch (error) {
-    console.error('Proxy Error:', error);
-    res.status(500).json({ error: 'K connection failed: ' + error.message });
-  }
-}
+      const errorText = await response.tex
