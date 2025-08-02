@@ -8,26 +8,27 @@ export default async function handler(req, res) {
     return;
   }
   
-  if (req.method !== 'POST') {
-    res.status(405).json({ error: 'Method not allowed' });
-    return;
-  }
-  
   try {
     const response = await fetch('https://www.chatbase.co/api/chat/u2FE20IFibqz6cbARRZZy/playground', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Cookie': 'sb-backend-auth-token=base64-eyJhY2Nlc3NfdG9rZW4iOiJleUpoYkdjaU9pSklVekkxTmlJc0ltdHBaQ0k2SW10ellXcFlkRkZSYWtNd1prTXpkblFpTENKMGVYQWlPaUpLVjFRaWZRLmV5SnBjM01pT2lKb2RIUndjem92TDJOd2FuWnhZWEZzWW05eWFIUjRhbmxqYldka0xuTjFjR0ZpWVhObExtTnZMMkYxZEdndmRqRWlMQ0p6ZFdJaU9pSmtPR0UxWm1JNVpDMDBNMlF4TFRRM05Ea3RZV000TXkweU56TXlaREZsWWpFNVl6TWlMQ0poZFdRaU9pSmhkWFJvWlc1MGFXTmhkR1ZrSWl3aVpYaHdJam94TnpVME1UTXpNRGsxTENKcFlYUWlPakUzTlRReE1URTBPVFVzSW1WdFlXbHNJam9pYW1WaGFuVnVaekkwUUdkdFlXbHNMbU52YlNJc0luQm9iMjVsSWpvaUlpd2lZWEJ3WDIxbGRHRmtZWFJoSWpwN0luQnliM1pwWkdWeUlqb2laVzFoYVd3aUxDSndjbTkyYVdSbGNuTWlPbHNpWlcxaGFXd2lYWDBzSW5WelpYSmZiV1YwWVdSaGRHRWlPbnNpWlcxaGFXd2lPaUpxWldGcWRXNW5NalJBWjIxaGFXd3VZMjl0SWl3aVpXMWhhV3hmZG1WeWFXWnBaV1FpT25SeWRXVXNJbkJvYjI1bFgzWmxjbWxtYVdWa0lqcG1ZV3h6WlN3aWMzVmlJam9pWkRoaE5XWmlPV1F0TkROa01TMDBOelE1TFdGak9ETXRNamN6TW1ReFpXSXhPV016SW4wc0luSnZiR1VpT2lKaGRYUm9aVzUwYVdOaGRHVmtJaXdpWVdGc0lqb2lZV0ZzTVNJc0ltRnRjaUk2VzNzaWJXVjBhRzlrSWpvaWNHRnpjM2R2Y21RaUxDSjBhVzFsYzNSaGJYQWlPakUzTlRNMU56SXdOVGg5WFN3aWMyVnpjMmx2Ymw5cFpDSTZJbUpqWVRFeE16VmtMVGsyTVRRdE5HRTROUzFpTkRjd0xXTmlNall5Wm1Oa05tWXdOaUlzSW1selgyRnViMjU1Ylc5MWN5STZabUZzYzJWOS43dkZBajVNT2p5ZEx3NklSWHYyUU11NE0yMjdYZVN5cndKOG5lTnV3cW40IiwidG9rZW5fdHlwZSI6ImJlYXJlciIsImV4cGlyZXNfaW4iOjIxNjAwLCJleHBpcmVzX2F0IjoxNzU0MTMzMDk1LCJyZWZyZXNoX3Rva2VuIjoiNmd5amxrN2x5anVzIiwidXNlciI6eyJpZCI6ImQ4YTVmYjlkLTQzZDEtNDc0OS1hYzgzLTI3MzJkMWViMTljMyIsImF1ZCI6ImF1dGhlbnRpY2F0ZWQiLCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImVtYWlsIjoiamVhanVuZzI0QGdtYWlsLmNvbSIsImVtYWlsX2NvbmZpcm1lZF9hdCI6IjIwMjUtMDctMjBUMjE6MDA6NTAuNjM5OTkyWiIsInBob25lIjoiIiwiY29uZmlybWF0aW9uX3NlbnRfYXQiOiIyMDI1LTA3LTIwVDIwOjU5OjE1LjkxMTEwNloiLCJjb25maXJtZWRfYXQiOiIyMDI1LTA3LTIwVDIxOjAwOjUwLjYzOTk5MloiLCJsYXN0X3NpZ25faW5fYXQiOiIyMDI1LTA3LTI2VDIzOjIwOjU4LjU2MzIxMVoiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJlbWFpbCI6ImplYWp1bmcyNEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGhvbmVfdmVyaWZpZWQiOmZhbHNlLCJzdWIiOiJkOGE1ZmI5ZC00M2QxLTQ3NDktYWM4My0yNzMyZDFlYjE5YzMifSwiaWRlbnRpdGllcyI6W3siaWRlbnRpdHlfaWQiOiJmNDA3YWFkMC01Y2U2LTQ3NzQtOTc3MS05Zjg4MjhkMDUzZjgiLCJpZCI6ImQ4YTVmYjlkLTQzZDEtNDc0OS1hYzgzLTI3MzJkMWViMTljMyIsInVzZXJfaWQiOiJkOGE1ZmI5ZC00M2QxLTQ3NDktYWM4My0yNzMyZDFlYjE5YzMiLCJpZGVudGl0eV9kYXRhIjp7ImVtYWlsIjoiamVhanVuZzI0QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInN1YiI6ImQ4YTVmYjlkLTQzZDEtNDc0OS1hYzgzLTI3MzJkMWViMTljMyJ9LCJwcm92aWRlciI6ImVtYWlsIiwibGFzdF9zaWduX2luX2F0IjoiMjAyNS0wNy0yMFQyMDo1OToxNS45MDMzNDFaIiwiY3JlYXRlZF9hdCI6IjIwMjUtMDctMjBUMjA6NTk6MTUuOTAzMzg3WiIsInVwZGF0ZWRfYXQiOiIyMDI1LTA3LTIwVDIwOjU5OjE1LjkwMzM4N1oiLCJlbWFpbCI6ImplYWp1bmcyNEBnbWFpbC5jb20ifV0sImNyZWF0ZWRfYXQiOiIyMDI1LTA3LTIwVDIwOjU5OjE1Ljg5NjcxOVoiLCJ1cGRhdGVkX2F0IjoiMjAyNS0wOC0wMlQwNToxMTozNS41MDE4MDJaIiwiaXNfYW5vbnltb3VzIjpmYWxzZX19; _ga_TPP1FRFRHT=GS2.1.s1754118666$o19$g1$t1754119099$j60$l0$h0; ph_phc_LRLvwlsuLuCxZe7KPEEdX0O3w2x4e1AiIhmEdaQc7aj_posthog=%7B%22distinct_id%22%3A%2201984909-f9a4-7be7-ae76-4ce95b761c29%22%2C%22%24sesid%22%3A%5B1754121711023%2C%220198699e-a3ae-7fde-891c-e326352b16c7%22%2C1754118661032%5D%2C%22%24initial_person_info%22%3A%7B%22r%22%3A%22%24direct%22%2C%22u%22%3A%22https%3A%2F%2Fwww.chatbase.co%2Fauth%2Fsignin%3FredirectedFrom%3D%252Fdashboard%252Fjeajung24s-team%252Fchatbot%252F8aGQScyMDWRoOSlOQRSJG%252Fplayground%22%7D%7D'
+        'Cookie': 'YOUR_COMPLETE_COOKIE_STRING_HERE'
       },
       body: JSON.stringify(req.body)
     });
     
     const data = await response.text();
-    res.status(200).send(data);
+    console.log('Chatbase response:', data);
+    console.log('Response status:', response.status);
+    
+    res.status(200).json({
+      status: response.status,
+      chatbaseResponse: data,
+      message: 'Debug info - check logs'
+    });
     
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'K is sleeping' });
+    res.status(500).json({ error: error.message });
   }
 }
