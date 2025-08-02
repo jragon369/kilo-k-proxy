@@ -8,6 +8,11 @@ export default async function handler(req, res) {
     return;
   }
   
+  if (req.method !== 'POST') {
+    res.status(405).json({ error: 'Method not allowed' });
+    return;
+  }
+  
   try {
     const response = await fetch('https://www.chatbase.co/api/chat/u2FE20IFibqz6cbARRZZy/playground', {
       method: 'POST',
@@ -19,16 +24,10 @@ export default async function handler(req, res) {
     });
     
     const data = await response.text();
-    console.log('Chatbase response:', data);
-    console.log('Response status:', response.status);
-    
-    res.status(200).json({
-      status: response.status,
-      chatbaseResponse: data,
-      message: 'Debug info - check logs'
-    });
+    res.status(200).send(data);
     
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error:', error);
+    res.status(500).json({ error: 'K is sleeping' });
   }
 }
